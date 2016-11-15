@@ -1,0 +1,138 @@
+
+Debuggin Python on a BananaPi
+
+I got this interesting BananaPi board for the development purpose. The hardware configuration seems good, it has an octa-core ARM with 1G RAM, so it can process loads of information very fast. More harware details can be
+found here(http://www.bananapi.org/p/product.html);
+Being in the IOT period of the development era, sensors are getting a very good momentum and are becoming more present in Drones, in war industry and nontheless can bring a progress in agriculture industry, 
+surveillance and have all sorts of aplicabilities; BananaPi being a sensor friendly device with it's GPIO port it's easy to understand why I chose it for a "drive test".
+
+So, getting in the technicalities, my intention is to be able to Debug(complete debug with acces to symbols and everything) Python code that runs on the BananaPi remotly from my Windows 7 machine. 
+So, to do this, I identified several steps that can help me to do this.
+
+Step 1. Flashing the BananaPi.
+First step on using the bananapi was to flash it with an image. You can find multiple images availabe here(http://www.banana-pi.org/m3-download.html).
+An image that worked for me is this: 2015-11-21-raspbian-jessie-bpi-m3-sd-emmc.img(https://drive.google.com/file/d/0B_YnvHgh2rwjbVdCTWQyNzl5TTA/view).
+I tried to flash around 3 images(2015-11-21-raspbian-jessie-bpi-m3-sd-emmc.img, 2016-07-01-ubuntu-mate-16.04-Xenial-gpu-mpv-bt-nodejs-beta3-bpi-m3-sd-emmc.img, 2016-07-10-ubuntu-16.04-xenial-minimal-preview-bpi-m3.img) 
+before using a Raspbian image, none of them worked, strange.
+To write the image on the SD card I used Win32DiskImager(https://sourceforge.net/projects/win32diskimager/), it's straight forward. A problem I encountered was when I tried to write another image on SD with an image already on it.
+To reset the SD to it's original size and structure I used the following commands:
+	Start -> Cmd. In cmd:
+		DISKPART 
+		LIST DISK
+		SELECT DISK #nr (USB Stick I have only a HDD so it was 1 on mine)
+		CLEAN ALL
+		CREATE PARTITION PRIMARY
+		SELECT PARTITION 1
+		ACTIVE
+		FORMAT FS=FAT32 QUICK
+		ASSIGN
+		EXIT
+		EXIT
+This was my first solved difficulty.
+
+So now I got to boot the BananaPi.
+Next step was to install everything needed on my Windows machine.
+
+Step 2. Installing tools on Windows machine.
+Note: From now I'll refer to the Raspbian image on the BananaPi as "PI" and to the Windows machine as "PC"
+For subjective reasons, considering that I worked on different ocasions with Eclipse I used Eclipse Neon(https://www.eclipse.org/downloads/download.php?file=/oomph/epp/neon/R/eclipse-inst-win64.exe) as IDE.
+For Python development on Eclipse I used PyDev, for Remote connection I used RSE(Remote Systems Explorer)
+	2.1. Install Pydev
+	Eclipse -> Help -> Install New Software 
+	add "http://pydev.org/updates/" 
+	(image PyDev install)
+	2.2. Install RSE
+	Eclipse -> Help -> Install New Software 
+	(image RSE)
+	
+So now we will have in Eclipse 2 new Perspectives:
+PyDev perspective:
+(image PyDev perspective)
+RSE perspective:
+(image RSE perspective)
+
+Now we need to connect PC with PI dvice.
+
+Step 3. Connecting the Windows machine with BananaPi device.
+To remoteley connect from PC to PI open RSE perspective, and there you'll have access to a "Remote System" tab like in the photo:
+(image RemoteSystem tab)
+In case the connection is not created automagically, as on my side, you need to create it manually. To create the remote connection create a new connection, type "SSH only".
+The IP will be the IP of the PI device.
+I have no extended Linux experience but it's quite straight forward to create a new User on the Linux machine or use an already created one.
+I created a new one because this new remote connection automagically created on my side used the username "LAPETRE" so I created this user also on Linux machine.
+If the connection succesded folder structure should appear as in PI device. 
+There, in the PI machine, you need to copy the pysrc folder of the PyDev eclipse plugin. On my machine this folder installed on path: c:\Users\lapetre\.p2\pool\plugins\
+
+
+Step 4. Testing the connection between PC and PI device.
+In RSE Perspective you'll see a tab called "Remote Shell", if it's not there you can add it with Eclipse -> Windows -> Show View -> Remote Systems there, select "Remote Shell".
+In the Remote Shell tab you can create a remote connection with the device like in the picture below:
+(image RemoteShell tab)
+This is a SSH connection, you can test it by navigating in the folder structure on the remote device.
+
+Step 5. Configuring the BananaPi device.
+On the PI you don't need to do much configuration, you only needed to create the user for remote connection, step mentioned above, also you need to copy the pysrc folder of the PyDev eclipse plugin, step also mentioned above.
+Beside this you need to configure pydev_file_utils.py like in the image below
+(image edit pydev_file_utils)
+On my side this was the mapping of the source files.
+'/home/lapetre/DataAggregator/DataCollector' from the PI is mapping to 'C:\Workarea\DataAggregator\DataCollector' from the PC.
+
+Step 6. Create a demo file.
+I created a small script called GPIO.py on my local address: C:\Workarea\DataAggregator\DataCollector\GPIO.py with this code in it:
+import sys
+sys.path.append(r'/home/lapetre/pysrc') # this is the PATH of the pysrc from the PI
+import pydevd
+pydevd.settrace('10.188.5.67') # this is the IP of the PC
+import os
+import platform
+
+if __name__ == "__main__":
+    print "test1"
+    print os.name
+    print platform.system()
+    print platform.release()
+	
+You need to go to the RSE Perspective and create the source file. I did it like so:
+On the "Remote System" tab I created a Folder named "DataAggregator". Right click on it and press "Export From Project".
+Check the project that you need to be synced(photo below)
+(Export_Form_Project.jpg)
+
+Step 7. Running the code and starting a debug session
+To start the debug session you need to go to PyDev perspective and there you'll see a button for starting the Python server on the PI device, like in the image below.
+(image PyDev start debugging BTN)
+If you don't find the button there you can add it by going to Eclipse -> Windows -> Perspective -> Customize Perspective Go to "Action Set Availability" there you need to check the "PyDev Debug" checkbox.
+After the server is started you can go to "Remote Shell" tab, launch the Remote Shell as descibed on previous steps and there use command: "python GPIO.py" to run remotly the code.
+You can add breakpoints to it and debug it step by step.
+This should be displayed on the Remote Shell:
+(Output.jpg)
+
+Notes:
+1. Your code from the PI and from the PC should be always in sync.
+2. I noticed that id I'm remotl connected from PC to PI, by MSTSC for eg the debug stops working.
+
+Step 8. Installing additional tools on Raspbian:
+8.1. Creating a separate user for remote connection:
+	useradd -m lapetre
+	passwd lapetre
+	Add the user to sudo group:
+	sudo adduser lapetre sudo
+8.2. Adding GPIO package for Python:
+		git clone https://github.com/LeMaker/RPi.GPIO_BP -b bananapi
+	You need have the python-dev package:
+		sudo apt-get update
+		sudo apt-get install python-dev
+	Compile and install:
+		cd RPi.GPIO_BP
+		python setup.py install                 
+		sudo python setup.py install
+8.3. Install FTP server so you can copy the files from Win to Raspbian
+	apt-get install vsftpd
+	Change configuration with:
+	vim /etc/vsftpd.conf
+	change:
+	anonymous_enable=NO
+	local_enable=YES
+	write_enable=YES
+8.4. Enable serial usage for all users:
+	sudo chmod a+rw /dev/ttyS2
+	

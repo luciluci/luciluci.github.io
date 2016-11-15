@@ -1,0 +1,300 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>From specification to a user friendly visual model</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
+	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
+	<meta name="author" content="FreeHTML5.co" />
+
+
+  	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+
+	<!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet"> -->
+	<!-- <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i" rel="stylesheet"> -->
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="../../css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="../../css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="../../css/bootstrap.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="../../css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="../../js/modernizr-2.6.2.min.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+	</head>
+	<body>
+		
+	<div class="fh5co-loader"></div>
+	
+	<div id="page">
+	<nav class="fh5co-nav" role="navigation">
+		<div class="container">
+			<div class="fh5co-top-logo">
+				<div id="fh5co-logo"><a href="../../index.html">Lucian Apetre</a></div>
+			</div>
+			<div class="fh5co-top-menu menu-1 text-center">
+				<ul>
+					<li><a href="../../work.html">Work</a></li>
+					<li><a href="../../about.html">Profile</a></li>
+					<li><a href="../../contact.html">Contact</a></li>
+				</ul>
+			</div>
+			<div class="fh5co-top-social menu-1 text-right">
+				<ul class="fh5co-social">
+					<li><a href="#"><i class="icon-twitter"></i></a></li>
+					<li><a href="#"><i class="icon-dribbble"></i></a></li>
+					<li><a href="#"><i class="icon-github"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	<div id="fh5co-author">
+		<div class="container">
+			<div class="row top-line animate-box">
+				<div class="col-md-6 col-md-offset-3 col-md-push-2 text-left fh5co-heading">
+					<h2>From specification to a user friendly visual model</h2>
+					<p>The purpose for this project was to find a way to easely convert technical specifications to user friendly graphical representation.
+						<br>I considered a smart house type of system for which I have specifications describing the software states of the system.	</p>
+					
+					<div class="role">
+						<h3>TECHNOLOGIES, OPERATING SYSTEM</h3>
+						<ul>
+							<li>Python 2.7</li>
+							<li>Windows</li>
+							<li>Graphviz 2.38</li>
+							<li>Dot</li>
+							<li>Eclipse Neon</li>
+						</ul>
+					</div>
+
+					<p><a href="#" class="btn btn-primary">Visit Website</a></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<div class="testimony animate-box">
+						<p>Let's consider a "smart home" type of system, mounted inside a house.</p>
+					
+						<p class="animate-box"><img src="Images/smart_home.jpg" class="img-responsive" alt="Free HTML5 Template by FreeHTML5.co"></p>
+						<p>It will consist mainly of two parts, one will be the hardware part, composed of an alarm mechanism, an air conditioner, a heater, a temperature sensor that will monitor and transmit
+						the temperature and the lights from the inside the house. 
+						<br>The second part of the system will be an application that runs on a embedded platform which monitors and controls the hardware system. Our focus will be on the functionalities of the application.</p>
+						<p>Some very brief features of the application will be:</p>
+						<li>1. the user of the system, using the application hosted on the terminal can log in/log off/create an account</li>
+						<li>2. the logged in user can switch the alarm on or off</li>
+						<li>3. the logged in user can switch the lights on or off.</li>
+						<br>
+						<p>The application state can be very well described with a state machine. 
+						<br>All these features should cover the functionalities that the entire system is capable of, without getting into very technical details, mainly 
+						it will contain the possible states of the system, the possible transitions from one state to another, the actions that the system will do when 
+						a specific state is reached and how the system will react to commands.</p>
+						<p>My focus will be to model this states and this transitions in a way that it will be easy to read by everybody that is part of this project and also by the potential customers.</p>
+					</div>
+					<div class="testimony animate-box">
+						<p>Having this specifications file:<p>
+						<xmp>
+<statemachine>
+	<state name="Idle">
+		<nextState name="Login" command="userLogin" log="Transition to Login screen" imageId="Default">
+		<nextState name="CreateNewAccount" command="userCreateAccount" log="Transition to CreateNewAccount screen" imageId="Default">
+	</state>
+	<state name="Login">
+		<nextState name="CommandScreen" command="submitCredentials" BussinessLogicCall="validateUser() == true" text="User authenticated" imageId="Login_OK">
+		<nextState name="Idle" command="submitCredentials" BussinessLogicCall="validateUser() == false" text="User failed to authenticate" imageId="Login_NOK">
+	</state>
+	<state name="CommandScreen">
+		<nextState name="Armed" command="armSystem" log="Arming system" imageId="Default">
+		<nextState name="ChangeTemperature" command="changeTemperature" BussinessLogicCall="validatetemperatureSources() == true" imageId="Default">
+		<nextState name="ConfirmationScreen" command="changeTemperature" BussinessLogicCall="validatetemperatureSources() == false" imageId="NOK">
+	</state>
+	<state name="ChangeTemperature">
+		<nextState name="ConfirmationScreen" imageId="OK">
+	</state>
+	<state name="ConfirmationScreen">
+		<nextState name="CommandScreen" imageId="Default">
+	</state>
+	<state name="Armed">
+		<nextState name="Disarmed" command="disarm_system" BussinessLogicCall="disarmSystem()" text="System disarmed" imageId="Default">
+	</state>
+</statemachine>
+						</xmp>
+					</div>
+					<div class="testimony animate-box">
+						<p>Having this specifications in the XML form, we need to create an application that will parse it and eventually display it in a more readable form.
+							<br>For this first step, parsing the specifications, I used Python. It is very straight forward to use, it is object oriented and with a very
+							 intuitive syntax. The code needs to be kept clean, simple and modular, it is very easy to get ambiguous calls onto objects because you can 
+							 create them as you go.
+							<br>This parser can also encapsulate other specification files like for eg: mapping the screenIds with different screen pictures, or 
+							translate the conditions to more technical ones, globalization or anything that you can think of.<p>
+					</div>
+					<div class="testimony animate-box">
+					<p>Below a few Python script lines that will parse the XML:</p>
+						<xmp>
+from xml.dom.minidom import parse
+from xml.sax import make_parser
+
+def readXml(filename):
+    parser = make_parser()
+    xml = parse(filename, parser)
+    rootNode = _readNodes(xml)
+	text = createGraphText(rootNode)
+	writeGraphFiles("graph.gv", text)
+	.....
+
+def _readNodes(xml):
+	nodes = []
+    stateNodes = xml.getElementsByTagName('state')
+    for stateNode in stateNodes:
+        node = Node()
+        node.name = stateNode.getAttribute('name')
+		node.nextNodes = _readStateTransitions(stateNode)
+		nodes.append(node)
+	return nodes
+	
+def _readStateTransitions(stateNode):
+	nextNodes = []
+    nextStateNodes = stateNode.getElementsByTagName('nextState')
+    for nextStateNode in nextStateNodes:
+        nextNode = Node()
+		nextNode.name = nextStateNode.getAttribute('name')
+		nextNode.command = nextStateNode.getAttribute('command')
+		nextNode.BussinessLogicCall = nextStateNode.getAttribute('BussinessLogicCall')
+		nextNode.imageId = nextStateNode.getAttribute('imageId')
+		nextNodes.append(nextNode)
+	return nextNodes
+						</xmp>
+					</div>
+					<div class="testimony animate-box">
+						<p>Now we have all the data in a <b>Node</b> object, that contains nodes data and as a linked list contains a tree shaped information map about all states 
+						that are describing the system.
+						<br>After the parsing step, we will further use Python in order to generate a .gv(vector graphic) file that will be the base for the new face 
+						of our graphical model of the specification XML file.
+						<br>So, we have our data in the <b>Node</b> object, we need to use it to create the .gv file. To do this, we will write some simple functions:</p>
+						<xmp>
+def createGraphText(rootNode):
+    text = writeHeader(rootNode.name)
+    text += createNodesText(rootNode)
+    text += writeFooter()
+    return text
+	
+def writeHeader(diagramName):
+    text = ""
+    text += 'digraph "%s" {\n' % diagramName
+    text += "  rankdir=LR\n" 
+    text += "  node [shape=Mrecord, color=\"#AAAAAA\", fontname=\"Arial\", fontsize=10, height=0.02, width=0.02]\n" 
+    text += "  edge [color=pink, len=0.5, penwidth=4.0, fontname=\"Arial\", fontsize=12, fontcolor=\"#AA00CC\"]\n"
+    text += "\n"
+    return text
+	
+def createNodesText(rootNode):
+        text = ""
+        if rootNode.name:
+            text = '  %s [label=%s]\n' % (rootNode.name, rootNode.name)
+            for node in rootNode.nextNodes:
+                text += createNodesText(node)
+        text += '\n'
+        return text
+		
+def writeFooter():
+        return "}\n" 
+
+def writeGraphFiles(outfile, text):
+    file(outfile, "wb").write(text)
+    for format_ in ("svg",):
+        dot.convertDotGraph(outfile, format_)	
+						</xmp>
+					</div>
+					<div class="testimony animate-box">
+						<p>convertDotGraph runs a process that executed dot.exe with filename as params and some flags set, this is configuration related so we don't need 
+						too pay much attention here.
+						<br>For running it, of course we will need dot.exe, dot.exe is added when installing Graphviz(http://www.graphviz.org/).
+
+						<br>After this step we will have our first graphical form of the XML specifications.</p>
+						<p class="animate-box"><img src="Images/Diagram.jpg" class="img-responsive" alt="Free HTML5 Template by FreeHTML5.co"></p>
+					</div>
+					<div class="row row-pt-md portfolio-navigation">
+						<div class="col-xs-4 text-left">
+							<a href="../DebuggingArticle/DebuggingPythonOnRaspberryPi.html" class="btn btn-primary btn-outline"><i class="icon-chevron-left"></i> Prev </a>
+						</div>
+						<div class="col-xs-4 text-center">
+							<a href="../../work.html" class="btn btn-primary btn-outline"><i class="icon-grid2"></i> View All</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="fh5co-started">
+		<div class="container">
+			<div class="row animate-box">
+				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+					<h2>Get Started</h2>
+					<p>If you need some guidance in engineering field or you're seeking for some help don't hesitate to write me.</p>
+					<p><a href="../../contact.html" class="btn btn-primary">Let's work together</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer id="fh5co-footer" role="contentinfo">
+		<div class="container">
+			<div class="row copyright">
+				<div class="col-md-12 text-center">
+					<p>
+						<small class="block">&copy; 2016 Free HTML5. All Rights Reserved.</small> 
+						</p>
+					
+					<ul class="fh5co-social-icons">
+						<li><a href="#"><i class="icon-twitter"></i></a></li>
+						<li><a href="#"><i class="icon-facebook"></i></a></li>
+						<li><a href="#"><i class="icon-linkedin"></i></a></li>
+						<li><a href="#"><i class="icon-dribbble"></i></a></li>
+					</ul>
+					
+				</div>
+			</div>
+
+		</div>
+	</footer>
+	</div>
+
+	<div class="gototop js-top">
+		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+	</div>
+	
+	<!-- jQuery -->
+	<script src="../../js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="../../js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="../../js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="../../js/jquery.waypoints.min.js"></script>
+	<!-- Main -->
+	<script src="../../js/main.js"></script>
+
+	</body>
+</html>
+

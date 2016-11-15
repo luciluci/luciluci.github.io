@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Debugging Python code remotely on a BananaPi device</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
+	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
+	<meta name="author" content="FreeHTML5.co" />
+
+  	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+
+	<!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet"> -->
+	<!-- <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i" rel="stylesheet"> -->
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="../../css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="../../css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="../../css/bootstrap.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="../../css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="../../js/modernizr-2.6.2.min.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+	</head>
+	<body>
+		
+	<div class="fh5co-loader"></div>
+	
+	<div id="page">
+	<nav class="fh5co-nav" role="navigation">
+		<div class="container">
+			<div class="fh5co-top-logo">
+				<div id="fh5co-logo"><a href="../../index.html">Lucian Apetre</a></div>
+			</div>
+			<div class="fh5co-top-menu menu-1 text-center">
+				<ul>
+					<li><a href="../../work.html">Work</a></li>
+					<li><a href="../../about.html">Profile</a></li>
+					<li><a href="../../contact.html">Contact</a></li>
+				</ul>
+			</div>
+			<div class="fh5co-top-social menu-1 text-right">
+				<ul class="fh5co-social">
+					<li><a href="#"><i class="icon-twitter"></i></a></li>
+					<li><a href="#"><i class="icon-dribbble"></i></a></li>
+					<li><a href="#"><i class="icon-github"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	<div id="fh5co-author">
+		<div class="container">
+			<div class="row top-line animate-box">
+				<div class="col-md-6 col-md-offset-3 col-md-push-2 text-left fh5co-heading">
+					<h2>Debugging Python code remotely on a BananaPi device</h2>
+					<p>The purpose of this project was that I needed to debug python code running on a BananaPi device. BananaPi is not that potent when it comes to running IDEs like Eclipse or Visual Studio, so I wanted
+					to try to debug python code that runs on the BananaPi in a remote user friendly environement.</p>
+					
+					<div class="role">
+						<h3>Technologies, Operating System, Devices</h3>
+						<ul>
+							<li>Python 2.7</li>
+							<li>Raspbian</li>
+							<li>BananaPi</li>
+							<li>PyDev</li>
+							<li>Eclipse Neon</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<div class="testimony animate-box">
+						<p class="animate-box"><img src="Images/BananaPi.jpg" class="img-responsive" alt="Free HTML5 Template by FreeHTML5.co"></p>
+						<h3>STEP 1: Flashing the BananaPi</h3>
+						<p>First step on using the bananapi was to flash it with an image. You can find multiple images availabe <a href="http://www.banana-pi.org/m3-download.html">here</a>.<br>
+						A image that worked for me is this <a href="https://drive.google.com/file/d/0B_YnvHgh2rwjbVdCTWQyNzl5TTA/view">2015-11-21-raspbian-jessie-bpi-m3-sd-emmc.img</a>.
+						<br>I tried to flash around 3 images(2016-07-12-raspbian-lite-bpi-m3.img, 2016-07-01-ubuntu-mate-16.04-Xenial-gpu-mpv-bt-nodejs-beta3-bpi-m3-sd-emmc.img, 
+						2016-07-10-ubuntu-16.04-xenial-minimal-preview-bpi-m3.img)  before using a Raspbian image, none of them worked, strange.</p>
+						<p>To write the image on the SD card I used Win32DiskImager from&nbsp;<a href="https://sourceforge.net/projects/win32diskimager/">here</a>, it's pretty straight forward.&nbsp;
+						A problem I encountered was when I tried to write another image on SD with an image already on it.&nbsp;To reset the SD to it's original size and structure I used the following commands:<br>
+						<code>DISKPART<br>
+						LIST DISK<br>SELECT DISK #<em>nr (I have only a HDD so it was 1 on mine)</em>
+						<br />CLEAN ALL<br />CREATE PARTITION PRIMARY<br />
+						SELECT PARTITION 1<br />ACTIVE<br />FORMAT FS=FAT32 QUICK<br />ASSIGN<br />EXIT</code>
+						</p>
+						<p>This mainly will clean the SD card and QUICK format it as FAT32.&nbsp;This was my first solved difficulty.
+						<br>So now I got to boot the BananaPi.&nbsp;Next step was to install everything needed on my Windows machine.</p>
+					</div>
+					<div class="testimony animate-box">
+						<h3>STEP 2. Installing the tools on Windows machine</h3>
+						<p>Note: From now I'll refer to the Raspbian image on the BananaPi as "<strong>PI</strong>" and to the Windows machine as "<strong>PC</strong>".&nbsp;</p>
+						<p>For subjective reasons, considering that I worked on different ocasions with Eclipse I used Eclipse Neon from
+						&nbsp;<a href="https://www.eclipse.org/downloads/download.php?file=/oomph/epp/neon/R/eclipse-inst-win64.exe">here</a>&nbsp;as IDE.<br>
+						For Python development on Eclipse I used PyDev plugin and for Remote connection I used RSE(Remote Systems Explorer) plugin.</p>
+						<h4>Install PyDev plugin</h4>
+						<p>Eclipse -&gt; Help -&gt; Install New Software <br />add "http://pydev.org/updates/" see below</p>
+						<p class="animate-box"><img src="Images/PyDev_Install.jpg" class="img-responsive" alt="Free HTML5 Template by FreeHTML5.co"></p>
+						<br>
+						<h4>Install RSE</h4>
+						<p>Eclipse -&gt; Help -&gt; Install New Software
+						<br>Select "Work With all available sites" and in the search box type "remote" so you can easely find the RSE plugin.</p>
+						<p class="animate-box"><img src="Images/RSE_Install.jpg" class="img-responsive" alt="Free HTML5 Template by FreeHTML5.co"></p>
+						<p>So now we will have in Eclipse 2 new Perspectives:&nbsp;</p>
+						<p>PyDev perspective:</p>
+						<p class="animate-box"><img src="Images/PyDev_Perspective.jpg" class="img-responsive" alt="Free HTML5 Template by FreeHTML5.co"></p>
+						<p>RSE perspective:</p>
+						<p class="animate-box"><img src="Images/RSE_Perspective.jpg" class="img-responsive" alt="Free HTML5 Template by FreeHTML5.co"></p>
+						<p>Now we need to connect PC with PI dvice.</p>
+					</div>
+					<div class="testimony animate-box">
+						<h3>STEP 3. Connecting the Windows machine with BananaPi device</h3>
+						<p>To remoteley connect from PC to PI open RSE perspective, and there you'll have access to a "Remote System" tab like in the photo:</p>
+						<p class="animate-box"><img src="Images/RemoteSystem_tab.jpg" class="img-responsive" alt="Free HTML5 Template by FreeHTML5.co"></p>
+						<p>In case the connection is not created automagically, as on my side, you need to create it manually. 
+						To create the remote connection create a new connection, type "SSH only".<br />
+						The IP will be the IP of the PI device.<br />
+						I have no extended Linux experience but it's quite straight forward to create a new User on the Linux machine or use an already created one.&nbsp;I created a new one because this new 
+						remote connection automagically created on my side used the username "LAPETRE" so I created this user also on Linux machine.<br />
+						If the connection succeded, the folder structure should appear as in PI device. <br />
+						There, in the PI device, you need to copy the pysrc folder of the PyDev eclipse plugin. On my machine this folder installed on path: 
+						c:\Users\lapetre\.p2\pool\plugins\org.python.pydev_5.1.2.201606231256\pysrc</p>
+					</div>
+					<div class="testimony animate-box">
+						<h3>STEP 4. Testing the connection between PC and PI device.</h3>
+						<p>In RSE Perspective you'll see a tab called "Remote Shell", if it's not there you can add it with Eclipse -&gt; Windows -&gt; Show View -&gt; Remote Systems there, select "Remote Shell".
+						<br />In the Remote Shell tab you can create a remote connection with the device like in the picture below:</p>
+						<p class="animate-box"><img src="Images/RemoteShell_tab.jpg" class="img-responsive" alt="Free HTML5 Template by FreeHTML5.co"></p>
+						<p>This is a SSH connection, you can test it by navigating in the folder structure on the remote device.</p>
+					</div>
+					<div class="testimony animate-box">
+						<h3>STEP 5. Configuring the BananaPI device.</h3>
+						<p>On the PI you don't need to do much configuration, you only needed to create the user for remote connection, 
+						step mentioned above, also you need to copy the pysrc folder of the PyDev eclipse plugin, step also mentioned above.<br />
+						Beside this you need to configure pydev_file_utils.py like in the image below:</p>
+						<p class="animate-box"><img src="Images/Edit_pydev_file_utils.jpg" class="img-responsive" alt="Free HTML5 Template by FreeHTML5.co"></p>
+						<p>On my side this was the mapping of the source files.<br />'/home/lapetre/DataAggregator/DataCollector' from the PI is mapping to 'C:\Workarea\DataAggregator\DataCollector' from the PC.</p>
+					</div>
+					<div class="testimony animate-box">
+						<h3>STEP 6. Create a demo file.</h3>
+						<p>I created a small script called GPIO.py on my local address: C:\Workarea\DataAggregator\DataCollector\GPIO.py with this code in it:</p>
+						<p><code>import sys<br />sys.path.append(r'/home/lapetre/pysrc') # this is the PATH of the pysrc from the PI<br />import pydevd<br />pydevd.settrace('10.188.5.67') # this is the IP of the PC<br />import os<br />import platform</code></p>
+						<p>You need to go to the RSE Perspective and create the source file. I did it like so:<br />
+						On the "Remote System" tab I created a Folder named "DataAggregator". Right click on it and press "Export From Project".<br />
+						Check the project that you need to be synced(photo below):</p>
+						<p class="animate-box"><img src="Images/Export_Form_Project.jpg" class="img-responsive" alt="Free HTML5 Template by FreeHTML5.co"></p>
+					</div>
+					<div class="testimony animate-box">
+						<h3>STEP 7. Running the code and starting a debug session.</h3>
+						<p>To start the debug session you need to go to PyDev perspective and there you'll see a button for starting the Python server on the PI device, like in the image below:</p>
+						<p class="animate-box"><img src="Images/PyDev_StartDebuggingBTN.jpg" class="img-responsive" alt="Free HTML5 Template by FreeHTML5.co"></p>
+						<p>If you don't find the button there you can add it by going to Eclipse -&gt; Windows -&gt; Perspective -&gt; 
+						Customize Perspective Go to "Action Set Availability" there you need to check the "PyDev Debug" checkbox.<br />
+						After the server is started you can go to "Remote Shell" tab, launch the Remote Shell as descibed on previous steps and there use command: "python GPIO.py" to run remotly the code.<br />
+						You can add breakpoints to it and debug it step by step.<br />
+						This should be displayed on the Remote Shell:</p>
+						<p class="animate-box"><img src="Images/Output.jpg" class="img-responsive" alt="Free HTML5 Template by FreeHTML5.co"></p>
+						<p>Some additional notes:<br>
+						* Your code from the PI and from the PC should be always in sync.<br></p>
+					</div>
+
+					<div class="row row-pt-md portfolio-navigation">
+						<div class="col-xs-4 text-center">
+							<a href="../../work.html" class="btn btn-primary btn-outline"><i class="icon-grid2"></i> View All</a>
+						</div>
+						<div class="col-xs-4 text-right">
+							<a href="../SpecificationsToDiagram/SpecificationsToDiagram.html" class="btn btn-primary btn-outline">Next <i class="icon-chevron-right"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="fh5co-started">
+		<div class="container">
+			<div class="row animate-box">
+				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+					<h2>Get Started</h2>
+					<p>If you need some guidance in engineering field or you're seeking for some help don't hesitate to write me.</p>
+					<p><a href="../../contact.html" class="btn btn-primary">Let's work together</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer id="fh5co-footer" role="contentinfo">
+		<div class="container">
+			<div class="row copyright">
+				<div class="col-md-12 text-center">
+					<p>
+						<small class="block">&copy; 2016 Free HTML5. All Rights Reserved.</small>
+					</p>
+					
+					<ul class="fh5co-social-icons">
+						<li><a href="#"><i class="icon-twitter"></i></a></li>
+						<li><a href="#"><i class="icon-facebook"></i></a></li>
+						<li><a href="#"><i class="icon-linkedin"></i></a></li>
+						<li><a href="#"><i class="icon-dribbble"></i></a></li>
+					</ul>
+					
+				</div>
+			</div>
+
+		</div>
+	</footer>
+	</div>
+
+	<div class="gototop js-top">
+		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+	</div>
+	
+	<!-- jQuery -->
+	<script src="../../js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="../../js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="../../js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="../../js/jquery.waypoints.min.js"></script>
+	<!-- Main -->
+	<script src="../../js/main.js"></script>
+
+	</body>
+</html>
+
