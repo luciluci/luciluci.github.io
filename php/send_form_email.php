@@ -27,11 +27,11 @@ if(isset($_POST['email'])) {
     }
      
  
-    $name = $_POST['name']; // required
+    $name = $_POST['fname']; // required
  
     $email_from = $_POST['email']; // required
  
-    $comments = $_POST['comments']; // required
+    $message = $_POST['message']; // required
  
      
  
@@ -53,9 +53,9 @@ if(isset($_POST['email'])) {
  
   }
  
-  if(strlen($comments) < 2) {
+  if(strlen($message) < 2) {
  
-    $error_message .= 'The Comments you entered do not appear to be valid.<br />';
+    $error_message .= 'The message you entered do not appear to be valid.<br />';
  
   }
  
@@ -83,7 +83,7 @@ if(isset($_POST['email'])) {
  
     $email_message .= "Email: ".clean_string($email_from)."\n";
  
-    $email_message .= "Comments: ".clean_string($comments)."\n";
+    $email_message .= "Message: ".clean_string($message)."\n";
  
      
  
