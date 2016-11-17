@@ -40,6 +40,20 @@
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
 
+	<script type="text/javascript">
+    function validateForm()
+    {
+    var a=document.forms["Form"]["fname"].value;
+    var b=document.forms["Form"]["email"].value;
+    var c=document.forms["Form"]["message"].value;
+    if (a==null || a=="",b==null || b=="",c==null || c=="")
+      {
+      alert("Please Fill All Required Field");
+      return false;
+      }
+    }
+    </script>
+
 	</head>
 	<body>
 	<script>
@@ -99,11 +113,11 @@
 					</div>
 					<div class="col-md-7 animate-box">
 						<h3>Get In Touch</h3>
-						<form action="mailto:lucian_apetre@yahoo">
+						<form method="post" name="Form" action="php/send_form_email.php" onsubmit="return validateForm()">
 							<div class="row form-group">
 								<div class="col-md-12">
 									<label for="fname">Your Name</label>
-									<input type="text" name="name" id="fname" class="form-control">
+									<input type="text" name="fname" id="fname" class="form-control">
 								</div>
 								
 							</div>
@@ -111,14 +125,14 @@
 							<div class="row form-group">
 								<div class="col-md-12">
 									<label for="email">Email</label>
-									<input type="text" id="email" class="form-control">
+									<input type="text" name="email" id="email" class="form-control">
 								</div>
 							</div>
 
 							<div class="row form-group">
 								<div class="col-md-12">
-									<label for="comments">Message</label>
-									<textarea name="comments" id="message" cols="30" rows="10" class="form-control"></textarea>
+									<label for="message">Message</label>
+									<textarea name="message" id="message" cols="30" rows="10" class="form-control"></textarea>
 								</div>
 							</div>
 							<div class="form-group">
