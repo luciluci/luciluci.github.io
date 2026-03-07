@@ -69,11 +69,11 @@
         margin-right: 5px;
     }
 </style>
-<div id="btn-container">
-    <button id="narrow" class="btn-control">Narrow</button>
-    <button id="full" class="btn-control active">Full</button>
-    <button id="wide" class="btn-control">Wide</button>
-</div>
+<!--<div id="btn-container">-->
+<!--    <button id="narrow" class="btn-control">Narrow</button>-->
+<!--    <button id="full" class="btn-control active">Full</button>-->
+<!--    <button id="wide" class="btn-control">Wide</button>-->
+<!--</div>-->
 <div id="map-wrapper-outer">
     <div id="map-wrapper-inner">
         <div id="map"></div>
@@ -85,7 +85,8 @@
     // TO MAKE THE MAP APPEAR YOU MUST
     // ADD YOUR ACCESS TOKEN FROM
     // https://account.mapbox.com
-    mapboxgl.accessToken = 'pk.eyJ1IjoibHVjaWFuLWFwZXRyZSIsImEiOiJjazlsM3k3eHkwNWp6M2ZwMjVlMnMwczN1In0.W4PZwNuDhD7r9Bgn1_lcgQ';
+    //mapboxgl.accessToken = 'pk.eyJ1IjoibHVjaWFuLWFwZXRyZSIsImEiOiJjazlsM3k3eHkwNWp6M2ZwMjVlMnMwczN1In0.W4PZwNuDhD7r9Bgn1_lcgQ';
+    mapboxgl.accessToken = 'pk.eyJ1IjoibHVjaWFuLWFwZXRyZSIsImEiOiJjazlsNDI2YWUwbWppM3FwaHVuc3Znc3M1In0.O3J1HqXN5RWBCQTNhANqxw';
     let map;
 
     const initializeMap = () => {
@@ -216,17 +217,17 @@
     };
 
     // button click listeners
-    document.getElementById('narrow').addEventListener('click', () => {
+    document.getElementById('narrow')?.addEventListener('click', () => {
         resizeMap({ width: '30%', height: '100%' });
         setActiveButton('narrow');
     });
 
-    document.getElementById('full').addEventListener('click', () => {
+    document.getElementById('full')?.addEventListener('click', () => {
         resizeMap({ width: '100%', height: '100%' });
         setActiveButton('full');
     });
 
-    document.getElementById('wide').addEventListener('click', () => {
+    document.getElementById('wide')?.addEventListener('click', () => {
         resizeMap({ width: '100%', height: '50%' });
         setActiveButton('wide');
     });
